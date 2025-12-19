@@ -1,0 +1,91 @@
+{
+  "name": "vizkit",
+  "version": "0.1.0",
+  "description": "A fast, lightweight, extensible data visualization library optimized for performance and composability",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./core": {
+      "import": "./dist/esm/core/index.js",
+      "require": "./dist/cjs/core/index.js",
+      "types": "./dist/types/core/index.d.ts"
+    },
+    "./charts": {
+      "import": "./dist/esm/charts/index.js",
+      "require": "./dist/cjs/charts/index.js",
+      "types": "./dist/types/charts/index.d.ts"
+    },
+    "./interactions": {
+      "import": "./dist/esm/interactions/index.js",
+      "require": "./dist/cjs/interactions/index.js",
+      "types": "./dist/types/interactions/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run clean && npm run build:types && npm run build:esm && npm run build:cjs",
+    "build:types": "tsc --emitDeclarationOnly --outDir dist/types",
+    "build:esm": "tsc --module es2015 --outDir dist/esm",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
+    "clean": "rm -rf dist",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "visualization",
+    "charts",
+    "canvas",
+    "d3",
+    "data-viz",
+    "charting",
+    "graphics",
+    "performance"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/vizkit"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/vizkit/issues"
+  },
+  "homepage": "https://github.com/yourusername/vizkit#readme",
+  "devDependencies": {
+    "@types/d3": "^7.4.3",
+    "@types/jest": "^29.5.11",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11"
+  },
+  "dependencies": {
+    "d3-array": "^3.2.4",
+    "d3-axis": "^3.0.0",
+    "d3-scale": "^4.0.2",
+    "d3-shape": "^3.2.0",
+    "d3-time": "^3.1.0",
+    "d3-time-format": "^4.1.0",
+    "d3-zoom": "^3.0.0",
+    "d3-quadtree": "^3.0.1",
+    "d3-ease": "^3.0.1"
+  },
+  "sideEffects": false
+}
