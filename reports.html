@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports - Pulse Analytics</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0F172A;
+      color: white;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 260px;
+      background: #1E293B;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      z-index: 100;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-section img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+    }
+
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #60A5FA, #A78BFA);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-section {
+      margin-bottom: 2rem;
+    }
+
+    .nav-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: #64748B;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    .nav-item {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.25rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #CBD5E1;
+      text-decoration: none;
+    }
+
+    .nav-item:hover {
+      background: rgba(79, 70, 229, 0.2);
+      color: white;
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+      color: white;
+    }
+
+    .main-content {
+      margin-left: 260px;
+      padding: 2rem;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      color: #94A3B8;
+    }
+
+    .create-btn {
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .create-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .reports-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .report-card {
+      background: #1E293B;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    .report-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .report-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 1rem;
+    }
+
+    .report-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    }
+
+    .report-menu {
+      color: #64748B;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .report-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .report-description {
+      color: #94A3B8;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .report-meta {
+      display: flex;
+      gap: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.85rem;
+      color: #64748B;
+    }
+
+    .report-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .schedule-badge {
+      padding: 0.25rem 0.75rem;
+      background: rgba(16, 185, 129, 0.2);
+      border-radius: 12px;
+      color: #10B981;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo-section">
+      <img src="favicon.png" alt="Pulse Logo">
+      <div class="logo-text">Pulse Analytics</div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-title">Main</div>
+      <a href="dashboard.html" class="nav-item">
+        <span class="iconify" data-icon="ri:dashboard-line" data-width="20"></span>
+        <span>Dashboard</span>
+      </a>
+      <a href="analytics.html" class="nav-item">
+        <span class="iconify" data-icon="ri:bar-chart-line" data-width="20"></span>
+        <span>Analytics</span>
+      </a>
+      <a href="data-sources.html" class="nav-item">
+        <span class="iconify" data-icon="ri:database-2-line" data-width="20"></span>
+        <span>Data Sources</span>
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-title">Tools</div>
+      <a href="ai-insights.html" class="nav-item">
+        <span class="iconify" data-icon="ri:brain-line" data-width="20"></span>
+        <span>AI Insights</span>
+      </a>
+      <a href="reports.html" class="nav-item active">
+        <span class="iconify" data-icon="ri:file-chart-line" data-width="20"></span>
+        <span>Reports</span>
+      </a>
+      <a href="settings.html" class="nav-item">
+        <span class="iconify" data-icon="ri:settings-3-line" data-width="20"></span>
+        <span>Settings</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="header">
+      <div>
+        <h1>Reports 📝</h1>
+        <p>Automated reports and scheduled deliveries</p>
+      </div>
+      <button class="create-btn">+ Create Report</button>
+    </div>
+
+    <div class="reports-grid" id="reportsGrid"></div>
+  </div>
+
+  <script>
+    // Check auth
+    const userData = JSON.parse(localStorage.getItem('pulseUser') || '{}');
+    if (!userData.email) {
+      window.location.href = 'signup.html';
+    }
+
+    // Mock reports
+    const reports = [
+      {
+        name: 'Weekly Revenue Summary',
+        icon: '💰',
+        description: 'Comprehensive revenue breakdown by product, region, and customer segment',
+        schedule: 'Every Monday 9am',
+        lastRun: '2 days ago',
+        recipients: 5
+      },
+      {
+        name: 'Monthly Executive Dashboard',
+        icon: '📊',
+        description: 'High-level KPIs and trends for executive team',
+        schedule: '1st of month',
+        lastRun: '18 days ago',
+        recipients: 8
+      },
+      {
+        name: 'Customer Churn Analysis',
+        icon: '📉',
+        description: 'Detailed analysis of churn patterns and at-risk customers',
+        schedule: 'Every Friday 5pm',
+        lastRun: '4 days ago',
+        recipients: 3
+      },
+      {
+        name: 'Product Usage Metrics',
+        icon: '📱',
+        description: 'Feature adoption, engagement, and user behavior analytics',
+        schedule: 'Daily 8am',
+        lastRun: '6 hours ago',
+        recipients: 12
+      },
+      {
+        name: 'Marketing Campaign ROI',
+        icon: '📢',
+        description: 'Performance metrics for all active marketing campaigns',
+        schedule: 'Bi-weekly',
+        lastRun: '1 week ago',
+        recipients: 6
+      },
+      {
+        name: 'Sales Pipeline Report',
+        icon: '🎯',
+        description: 'Deal stages, conversion rates, and forecast accuracy',
+        schedule: 'Every Wednesday',
+        lastRun: '1 day ago',
+        recipients: 9
+      }
+    ];
+
+    // Render reports
+    const grid = document.getElementById('reportsGrid');
+    
+    reports.forEach(report => {
+      const card = document.createElement('div');
+      card.className = 'report-card';
+      card.innerHTML = `
+        <div class="report-header">
+          <div class="report-icon">${report.icon}</div>
+          <div class="report-menu">⋮</div>
+        </div>
+        <h3>${report.name}</h3>
+        <div class="report-description">${report.description}</div>
+        <div class="schedule-badge">${report.schedule}</div>
+        <div class="report-meta">
+          <div class="report-meta-item">
+            <span>📅</span>
+            <span>Last run: ${report.lastRun}</span>
+          </div>
+          <div class="report-meta-item">
+            <span>👥</span>
+            <span>${report.recipients} recipients</span>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
