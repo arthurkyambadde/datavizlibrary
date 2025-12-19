@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - Pulse Analytics</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0F172A;
+      color: white;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 260px;
+      background: #1E293B;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      z-index: 100;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-section img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+    }
+
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #60A5FA, #A78BFA);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-section {
+      margin-bottom: 2rem;
+    }
+
+    .nav-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: #64748B;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    .nav-item {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.25rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #CBD5E1;
+      text-decoration: none;
+    }
+
+    .nav-item:hover {
+      background: rgba(79, 70, 229, 0.2);
+      color: white;
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+      color: white;
+    }
+
+    .main-content {
+      margin-left: 260px;
+      padding: 2rem;
+      max-width: 900px;
+    }
+
+    .header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      color: #94A3B8;
+    }
+
+    .settings-section {
+      background: #1E293B;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .settings-section h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .setting-item:last-child {
+      border-bottom: none;
+    }
+
+    .setting-info h3 {
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .setting-info p {
+      color: #94A3B8;
+      font-size: 0.9rem;
+    }
+
+    .toggle {
+      position: relative;
+      width: 50px;
+      height: 28px;
+      background: #334155;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .toggle.active {
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    }
+
+    .toggle-slider {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 22px;
+      height: 22px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    .toggle.active .toggle-slider {
+      transform: translateX(22px);
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: #0F172A;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .save-btn {
+      padding: 0.75rem 2rem;
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s;
+      margin-top: 1rem;
+    }
+
+    .save-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .danger-zone {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .danger-btn {
+      padding: 0.75rem 2rem;
+      background: transparent;
+      border: 2px solid #EF4444;
+      border-radius: 8px;
+      color: #EF4444;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .danger-btn:hover {
+      background: #EF4444;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo-section">
+      <img src="favicon.png" alt="Pulse Logo">
+      <div class="logo-text">Pulse Analytics</div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-title">Main</div>
+      <a href="dashboard.html" class="nav-item">
+        <span class="iconify" data-icon="ri:dashboard-line" data-width="20"></span>
+        <span>Dashboard</span>
+      </a>
+      <a href="analytics.html" class="nav-item">
+        <span class="iconify" data-icon="ri:bar-chart-line" data-width="20"></span>
+        <span>Analytics</span>
+      </a>
+      <a href="data-sources.html" class="nav-item">
+        <span class="iconify" data-icon="ri:database-2-line" data-width="20"></span>
+        <span>Data Sources</span>
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-title">Tools</div>
+      <a href="ai-insights.html" class="nav-item">
+        <span class="iconify" data-icon="ri:brain-line" data-width="20"></span>
+        <span>AI Insights</span>
+      </a>
+      <a href="reports.html" class="nav-item">
+        <span class="iconify" data-icon="ri:file-chart-line" data-width="20"></span>
+        <span>Reports</span>
+      </a>
+      <a href="settings.html" class="nav-item active">
+        <span class="iconify" data-icon="ri:settings-3-line" data-width="20"></span>
+        <span>Settings</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="header">
+      <h1>Settings ⚙️</h1>
+      <p>Manage your account and preferences</p>
+    </div>
+
+    <!-- Profile Settings -->
+    <div class="settings-section">
+      <h2>Profile</h2>
+      <div class="setting-item">
+        <div class="setting-info">
+          <h3>Full Name</h3>
+          <input type="text" class="input-field" id="userName" placeholder="Your name">
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-info">
+          <h3>Email Address</h3>
+          <input type="email" class="input-field" id="userEmail" placeholder="your@email.com">
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-info">
+          <h3>Company Name</h3>
+          <input type="text" class="input-field" id="userCompany" placeholder="Your company">
+        </div>
+      </div>
+      <button class="save-btn">Save Changes</button>
+    </div>
+
+    <!-- Notifications -->
+    <div class="settings-section">
+      <h2>Notifications</h2>
+      <div class="setting-item">
+        <div class="setting-info">
+          <h3>Email Notifications</h3>
+          <p>Receive email updates about your account</p>
+        </div>
+        <div class="toggle active" onclick="this.classList.toggle('active')">
+          <div class="toggle-slider"></div>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-info">
+          <h3>AI Insights Alerts</h3>
+          <p>Get notified when AI detects important patterns</p>
+        </div>
+        <div class="toggle active" onclick="this.classList.toggle('active')">
+          <div class="toggle-slider"></div>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-info">
+          <h3>Weekly Reports</h3>
+          <p>Receive weekly summary reports</p>
+        </div>
+        <div class="toggle" onclick="this.classList.toggle('active')">
+          <div class="toggle-slider"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preferences -->
+    <div class="settings-section">
+      <h2>Preferences</h2>
+      <div class="setting-item">
+        <div class="setting-info">
+          <h3>Dark Mode</h3>
+          <p>Use dark theme (currently enabled)</p>
+        </div>
+        <div class="toggle active" onclick="this.classList.toggle('active')">
+          <div class="toggle-slider"></div>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-info">
+          <h3>Auto-refresh Dashboards</h3>
+          <p>Automatically refresh data every 5 minutes</p>
+        </div>
+        <div class="toggle active" onclick="this.classList.toggle('active')">
+          <div class="toggle-slider"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Billing -->
+    <div class="settings-section">
+      <h2>Billing & Subscription</h2>
+      <div class="setting-item">
+        <div class="setting-info">
+          <h3>Current Plan</h3>
+          <p>Professional - $100/month</p>
+        </div>
+        <button class="save-btn">Upgrade Plan</button>
+      </div>
+      <div class="setting-item">
+        <div class="setting-info">
+          <h3>Trial Status</h3>
+          <p id="trialStatus">14 days remaining</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Danger Zone -->
+    <div class="settings-section danger-zone">
+      <h2>Danger Zone</h2>
+      <div class="setting-item">
+        <div class="setting-info">
+          <h3>Delete Account</h3>
+          <p>Permanently delete your account and all data</p>
+        </div>
+        <button class="danger-btn">Delete Account</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Check auth
+    const userData = JSON.parse(localStorage.getItem('pulseUser') || '{}');
+    if (!userData.email) {
+      window.location.href = 'signup.html';
+    }
+
+    // Populate user data
+    document.getElementById('userName').value = userData.name || '';
+    document.getElementById('userEmail').value = userData.email || '';
+    document.getElementById('userCompany').value = userData.company || '';
+
+    // Calculate trial days
+    const trialEnd = new Date(userData.trialEndDate);
+    const now = new Date();
+    const daysLeft = Math.ceil((trialEnd - now) / (1000 * 60 * 60 * 24));
+    document.getElementById('trialStatus').textContent = `${daysLeft} days remaining`;
+  </script>
+</body>
+</html>
