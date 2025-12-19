@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pulse Analytics - Sign Up for Free Trial</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      overflow: hidden;
+    }
+
+    .signup-container {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .left-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .logo-container {
+      margin-bottom: 1.5rem;
+    }
+
+    .logo-container img {
+      max-width: 150px;
+      height: auto;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: #0F172A;
+    }
+
+    .subtitle {
+      color: #64748B;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .demo-credentials {
+      background: #F1F5F9;
+      border-radius: 10px;
+      padding: 1rem;
+      border-left: 3px solid #10B981;
+    }
+
+    .demo-credentials h3 {
+      font-size: 0.85rem;
+      margin-bottom: 0.75rem;
+      color: #10B981;
+      font-weight: 700;
+    }
+
+    .credential-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .credential-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .credential-label {
+      color: #64748B;
+      font-weight: 600;
+    }
+
+    .credential-value {
+      background: white;
+      padding: 0.35rem 0.75rem;
+      border-radius: 5px;
+      font-weight: 600;
+      color: #0F172A;
+      font-family: 'Monaco', 'Courier New', monospace;
+    }
+
+    .right-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+      color: #0F172A;
+      font-size: 0.85rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 2px solid #E2E8F0;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #10B981;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+      margin-top: 0.5rem;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+    }
+
+    .demo-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: rgba(16, 185, 129, 0.1);
+      color: #10B981;
+      border: 2px solid #10B981;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 0.75rem;
+    }
+
+    .demo-btn:hover {
+      background: #10B981;
+      color: white;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 0.75rem 0;
+      color: #94A3B8;
+      position: relative;
+      font-size: 0.85rem;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 42%;
+      height: 1px;
+      background: #E2E8F0;
+    }
+
+    .divider::before {
+      left: 0;
+    }
+
+    .divider::after {
+      right: 0;
+    }
+
+    .features-list {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #E2E8F0;
+    }
+
+    .features-list h4 {
+      font-size: 0.8rem;
+      color: #64748B;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: #475569;
+    }
+
+    .checkmark {
+      color: #10B981;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .signup-container {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+        max-height: 95vh;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .features-list {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <!-- Left Section -->
+    <div class="left-section">
+      <div class="logo-container">
+        <img src="logo.png" alt="Pulse Analytics Logo">
+      </div>
+
+      <h1>Start Your Free Trial</h1>
+      <p class="subtitle">14 days free. No credit card required.</p>
+
+      <!-- Demo Credentials -->
+      <div class="demo-credentials">
+        <h3>🎯 Quick Demo Access</h3>
+        <div class="credential-item">
+          <span class="credential-label">Email:</span>
+          <span class="credential-value">demo@pulse.ai</span>
+        </div>
+        <div class="credential-item">
+          <span class="credential-label">Password:</span>
+          <span class="credential-value">demo2024</span>
+        </div>
+      </div>
+
+      <!-- Features List -->
+      <div class="features-list">
+        <h4>What's included:</h4>
+        <div class="features-grid">
+          <div class="feature-item">
+            <span class="checkmark">✓</span>
+            <span>AI-powered insights</span>
+          </div>
+          <div class="feature-item">
+            <span class="checkmark">✓</span>
+            <span>Real-time collaboration</span>
+          </div>
+          <div class="feature-item">
+            <span class="checkmark">✓</span>
+            <span>500+ data connectors</span>
+          </div>
+          <div class="feature-item">
+            <span class="checkmark">✓</span>
+            <span>Unlimited dashboards</span>
+          </div>
+          <div class="feature-item">
+            <span class="checkmark">✓</span>
+            <span>Priority support</span>
+          </div>
+          <div class="feature-item">
+            <span class="checkmark">✓</span>
+            <span>No credit card needed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Section - Form -->
+    <div class="right-section">
+      <!-- Sign Up Form -->
+      <form id="signupForm">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" placeholder="John Doe" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Work Email</label>
+          <input type="email" id="email" placeholder="john@company.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="company">Company Name</label>
+          <input type="text" id="company" placeholder="Acme Inc." required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Min. 8 characters" required minlength="8">
+        </div>
+
+        <button type="submit" class="submit-btn">Start Free Trial →</button>
+      </form>
+
+      <div class="divider">OR</div>
+
+      <button class="demo-btn" onclick="loginWithDemo()">Try Demo Account</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const company = document.getElementById('company').value;
+      
+      // Store user data in localStorage
+      const userData = {
+        name,
+        email,
+        company,
+        trialStartDate: new Date().toISOString(),
+        trialEndDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+        isDemo: false
+      };
+      
+      localStorage.setItem('pulseUser', JSON.stringify(userData));
+      
+      // Redirect to dashboard
+      window.location.href = 'dashboard.html';
+    });
+
+    function loginWithDemo() {
+      // Store demo user data
+      const demoUser = {
+        name: 'Demo User',
+        email: 'demo@pulse.ai',
+        company: 'Pulse Analytics Demo',
+        trialStartDate: new Date().toISOString(),
+        trialEndDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+        isDemo: true
+      };
+      
+      localStorage.setItem('pulseUser', JSON.stringify(demoUser));
+      
+      // Redirect to dashboard
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>
