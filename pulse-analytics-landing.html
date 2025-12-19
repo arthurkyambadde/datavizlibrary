@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pulse Analytics - Feel the Heartbeat of Your Data</title>
+  <meta name="description" content="AI-powered data analytics platform with real-time collaboration. 10x faster insights, predictive analytics, and natural language queries. $100/month.">
+  <link rel="icon" type="image/png" href="favicon.png">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #4F46E5;
+      --primary-dark: #4338CA;
+      --secondary: #7C3AED;
+      --accent: #06B6D4;
+      --dark: #0F172A;
+      --gray: #64748B;
+      --light-gray: #F1F5F9;
+      --white: #FFFFFF;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      z-index: 1000;
+      padding: 1rem 0;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .cta-button {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
+    }
+
+    /* Hero Section */
+    .hero {
+      margin-top: 80px;
+      padding: 6rem 2rem;
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(79, 70, 229, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(124, 58, 237, 0.2) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #60A5FA, #A78BFA);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-content p {
+      font-size: 1.25rem;
+      color: #CBD5E1;
+      margin-bottom: 2rem;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
+      display: inline-block;
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(79, 70, 229, 0.5);
+    }
+
+    .secondary-btn {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: background 0.3s;
+      display: inline-block;
+    }
+
+    .secondary-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .hero-visual {
+      position: relative;
+    }
+
+    .dashboard-preview {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #60A5FA, #A78BFA);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      color: #94A3B8;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Features Section */
+    .features {
+      padding: 6rem 2rem;
+      background: white;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 4rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .section-header p {
+      font-size: 1.25rem;
+      color: var(--gray);
+    }
+
+    .features-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: white;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 2rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-card p {
+      color: var(--gray);
+      line-height: 1.8;
+    }
+
+    /* Pricing Section */
+    .pricing {
+      padding: 6rem 2rem;
+      background: var(--light-gray);
+    }
+
+    .pricing-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .pricing-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2.5rem;
+      border: 2px solid #E2E8F0;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .pricing-card.featured {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      transform: scale(1.05);
+      border: none;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .pricing-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .price {
+      font-size: 3rem;
+      font-weight: 800;
+      margin: 1rem 0;
+    }
+
+    .price-period {
+      font-size: 1rem;
+      font-weight: 400;
+      opacity: 0.8;
+    }
+
+    .features-list {
+      list-style: none;
+      margin: 2rem 0;
+    }
+
+    .features-list li {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .pricing-card.featured .features-list li {
+      border-bottom-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .pricing-btn {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 600;
+      display: block;
+      transition: transform 0.3s;
+    }
+
+    .pricing-card:not(.featured) .pricing-btn {
+      background: var(--primary);
+      color: white;
+    }
+
+    .pricing-card.featured .pricing-btn {
+      background: white;
+      color: var(--primary);
+    }
+
+    .pricing-btn:hover {
+      transform: scale(1.05);
+    }
+
+    /* CTA Section */
+    .cta-section {
+      padding: 6rem 2rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .cta-section p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 3rem 2rem;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    .footer-section h4 {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .footer-section a {
+      display: block;
+      color: #94A3B8;
+      text-decoration: none;
+      margin-bottom: 0.5rem;
+      transition: color 0.3s;
+    }
+
+    .footer-section a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #64748B;
+    }
+
+    @media (max-width: 768px) {
+      .hero-container {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <div class="logo">
+        <div class="logo-icon">P</div>
+        <span>Pulse Analytics</span>
+      </div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#demo">Demo</a>
+        <a href="signup.html" class="cta-button">Start Free Trial</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1>
+          Feel the <span class="gradient-text">Heartbeat</span> of Your Data
+        </h1>
+        <p>
+          AI-powered analytics platform with real-time collaboration. 
+          Get insights 10x faster with natural language queries, predictive analytics, and live dashboards.
+        </p>
+        <div class="hero-buttons">
+          <a href="signup.html" class="primary-btn">Start Free Trial →</a>
+          <a href="#demo" class="secondary-btn">Watch Demo</a>
+        </div>
+        
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-value">10x</div>
+            <div class="stat-label">Faster Insights</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">500+</div>
+            <div class="stat-label">Data Connectors</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">99.99%</div>
+            <div class="stat-label">Uptime SLA</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="dashboard-preview">
+          <div style="background: rgba(255,255,255,0.1); height: 200px; border-radius: 8px; margin-bottom: 1rem;"></div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div style="background: rgba(255,255,255,0.1); height: 100px; border-radius: 8px;"></div>
+            <div style="background: rgba(255,255,255,0.1); height: 100px; border-radius: 8px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="section-header">
+      <h2>Everything You Need, Nothing You Don't</h2>
+      <p>Premium features that justify the investment</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3>AI-Powered Insights</h3>
+        <p>Ask questions in plain English. Get instant visualizations, predictions, and automated insights powered by advanced machine learning.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Real-Time Collaboration</h3>
+        <p>Edit dashboards together like Figma. Live co-editing, version control, and contextual comments keep your team aligned.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔌</div>
+        <h3>Universal Data Connector</h3>
+        <p>Connect to 500+ data sources with sub-second latency. Real-time streaming, smart blending, and automatic quality monitoring.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Beautiful Visualizations</h3>
+        <p>50+ chart types from basics to advanced. Custom D3.js visualizations, interactive dashboards, and geospatial analytics.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Enterprise Security</h3>
+        <p>SOC 2 Type II compliant. Row-level security, SSO/SAML, audit logs, and end-to-end encryption included.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🚀</div>
+        <h3>Lightning Performance</h3>
+        <p>Query billions of rows in milliseconds. In-memory processing, smart caching, and distributed computing at scale.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section class="pricing" id="pricing">
+    <div class="section-header">
+      <h2>Simple, Transparent Pricing</h2>
+      <p>Choose the plan that fits your team</p>
+    </div>
+
+    <div class="pricing-container">
+      <div class="pricing-card">
+        <h3>Starter</h3>
+        <div class="price">$100<span class="price-period">/mo</span></div>
+        <p>Perfect for small teams</p>
+        <ul class="features-list">
+          <li>✓ All core features</li>
+          <li>✓ 10 data sources</li>
+          <li>✓ 100GB storage</li>
+          <li>✓ 1M rows/month</li>
+          <li>✓ Email support</li>
+        </ul>
+        <a href="signup.html" class="pricing-btn">Start Free Trial</a>
+      </div>
+
+      <div class="pricing-card featured">
+        <h3>Professional</h3>
+        <div class="price">$200<span class="price-period">/mo</span></div>
+        <p>For growing teams</p>
+        <ul class="features-list">
+          <li>✓ Everything in Starter</li>
+          <li>✓ Unlimited data sources</li>
+          <li>✓ 1TB storage</li>
+          <li>✓ 10M rows/month</li>
+          <li>✓ Priority support</li>
+          <li>✓ Custom branding</li>
+        </ul>
+        <a href="#" class="pricing-btn">Start Free Trial</a>
+      </div>
+
+      <div class="pricing-card">
+        <h3>Enterprise</h3>
+        <div class="price">Custom</div>
+        <p>For large organizations</p>
+        <ul class="features-list">
+          <li>✓ Everything in Pro</li>
+          <li>✓ Unlimited everything</li>
+          <li>✓ Dedicated infrastructure</li>
+          <li>✓ 24/7 phone support</li>
+          <li>✓ Custom SLA</li>
+          <li>✓ On-premise option</li>
+        </ul>
+        <a href="#" class="pricing-btn">Contact Sales</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <h2>Ready to Feel the Pulse?</h2>
+    <p>Start your 14-day free trial. No credit card required.</p>
+    <a href="signup.html" class="primary-btn" style="background: white; color: var(--primary);">
+      Start Free Trial →
+    </a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h4>Product</h4>
+        <a href="#">Features</a>
+        <a href="#">Pricing</a>
+        <a href="#">Demo</a>
+        <a href="#">Integrations</a>
+      </div>
+      <div class="footer-section">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Blog</a>
+        <a href="#">Careers</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-section">
+        <h4>Resources</h4>
+        <a href="#">Documentation</a>
+        <a href="#">API Reference</a>
+        <a href="#">Community</a>
+        <a href="#">Support</a>
+      </div>
+      <div class="footer-section">
+        <h4>Legal</h4>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+        <a href="#">Compliance</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Pulse Analytics. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

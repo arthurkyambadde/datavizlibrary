@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pulse Analytics - Dashboard</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0F172A;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 260px;
+      background: #1E293B;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      z-index: 100;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-section img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+    }
+
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #10B981, #059669);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-section {
+      margin-bottom: 2rem;
+    }
+
+    .nav-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: #64748B;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-item {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.25rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #CBD5E1;
+      text-decoration: none;
+    }
+
+    .nav-item:hover {
+      background: rgba(16, 185, 129, 0.2);
+      color: white;
+      text-decoration: none;
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: white;
+      text-decoration: none;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 260px;
+      padding: 2rem;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .header-left h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .header-left p {
+      color: #94A3B8;
+    }
+
+    .header-right {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .trial-badge {
+      background: linear-gradient(135deg, #10B981, #059669);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #10B981, #059669);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: #1E293B;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .stat-title {
+      color: #94A3B8;
+      font-size: 0.9rem;
+    }
+
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-change {
+      font-size: 0.85rem;
+      color: #10B981;
+    }
+
+    .stat-change.negative {
+      color: #EF4444;
+    }
+
+    /* Chart Container */
+    .chart-container {
+      background: #1E293B;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-header h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .chart-controls {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .chart-btn {
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .chart-btn:hover, .chart-btn.active {
+      background: linear-gradient(135deg, #10B981, #059669);
+      border-color: transparent;
+    }
+
+    #revenueChart {
+      margin: 0 auto;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .action-card {
+      background: linear-gradient(135deg, #10B981, #059669);
+      border-radius: 12px;
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: transform 0.3s;
+      text-align: center;
+    }
+
+    .action-card:hover {
+      transform: scale(1.05);
+    }
+
+    .action-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .action-title {
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo-section">
+      <img src="favicon.png" alt="Pulse Logo">
+      <div class="logo-text">Pulse Analytics</div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-title">Main</div>
+      <a href="dashboard.html" class="nav-item active">
+        <span class="iconify" data-icon="ri:dashboard-line" data-width="20"></span>
+        <span>Dashboard</span>
+      </a>
+      <a href="analytics.html" class="nav-item">
+        <span class="iconify" data-icon="ri:bar-chart-line" data-width="20"></span>
+        <span>Analytics</span>
+      </a>
+      <a href="data-sources.html" class="nav-item">
+        <span class="iconify" data-icon="ri:database-2-line" data-width="20"></span>
+        <span>Data Sources</span>
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-title">Tools</div>
+      <a href="ai-insights.html" class="nav-item">
+        <span class="iconify" data-icon="ri:brain-line" data-width="20"></span>
+        <span>AI Insights</span>
+      </a>
+      <a href="reports.html" class="nav-item">
+        <span class="iconify" data-icon="ri:file-chart-line" data-width="20"></span>
+        <span>Reports</span>
+      </a>
+      <a href="settings.html" class="nav-item">
+        <span class="iconify" data-icon="ri:settings-3-line" data-width="20"></span>
+        <span>Settings</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <h1>Welcome back, <span id="userName">User</span>! 👋</h1>
+        <p>Here's what's happening with your data today</p>
+      </div>
+      <div class="header-right">
+        <div class="trial-badge" id="trialBadge">
+          14 days left in trial
+        </div>
+        <div class="user-menu">
+          <div class="user-avatar" id="userAvatar">U</div>
+          <span id="userEmail">user@email.com</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-title">Total Revenue</div>
+          <div class="stat-icon" style="background: linear-gradient(135deg, #10B981, #059669);">
+            <span class="iconify" data-icon="ri:money-dollar-circle-line" data-width="24" style="color: white;"></span>
+          </div>
+        </div>
+        <div class="stat-value">$124,563</div>
+        <div class="stat-change">↑ 12.5% from last month</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-title">Active Users</div>
+          <div class="stat-icon" style="background: linear-gradient(135deg, #10B981, #059669);">
+            <span class="iconify" data-icon="ri:group-line" data-width="24" style="color: white;"></span>
+          </div>
+        </div>
+        <div class="stat-value">8,549</div>
+        <div class="stat-change">↑ 8.2% from last month</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-title">Conversion Rate</div>
+          <div class="stat-icon" style="background: linear-gradient(135deg, #10B981, #059669);">
+            <span class="iconify" data-icon="ri:line-chart-line" data-width="24" style="color: white;"></span>
+          </div>
+        </div>
+        <div class="stat-value">3.24%</div>
+        <div class="stat-change negative">↓ 2.1% from last month</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-title">Avg. Session</div>
+          <div class="stat-icon" style="background: linear-gradient(135deg, #10B981, #059669);">
+            <span class="iconify" data-icon="ri:time-line" data-width="24" style="color: white;"></span>
+          </div>
+        </div>
+        <div class="stat-value">4m 32s</div>
+        <div class="stat-change">↑ 15.3% from last month</div>
+      </div>
+    </div>
+
+    <!-- Revenue Chart -->
+    <div class="chart-container">
+      <div class="chart-header">
+        <h3>Revenue Trend (Last 12 Months)</h3>
+        <div class="chart-controls">
+          <button class="chart-btn active" id="lineBtn">Line</button>
+          <button class="chart-btn" id="barBtn">Bar</button>
+          <button class="chart-btn" id="areaBtn">Area</button>
+        </div>
+      </div>
+      <div id="revenueChart"></div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <div class="action-card">
+        <div class="action-icon">
+          <span class="iconify" data-icon="ri:brain-line" data-width="32" style="color: white;"></span>
+        </div>
+        <div class="action-title">Ask AI</div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon">
+          <span class="iconify" data-icon="ri:dashboard-line" data-width="32" style="color: white;"></span>
+        </div>
+        <div class="action-title">New Dashboard</div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon">
+          <span class="iconify" data-icon="ri:plug-line" data-width="32" style="color: white;"></span>
+        </div>
+        <div class="action-title">Connect Data</div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon">
+          <span class="iconify" data-icon="ri:upload-cloud-line" data-width="32" style="color: white;"></span>
+        </div>
+        <div class="action-title">Export Report</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Load user data
+    const userData = JSON.parse(localStorage.getItem('pulseUser') || '{}');
+    
+    if (!userData.email) {
+      window.location.href = 'signup.html';
+    }
+
+    // Update UI with user data
+    document.getElementById('userName').textContent = userData.name.split(' ')[0];
+    document.getElementById('userEmail').textContent = userData.email;
+    document.getElementById('userAvatar').textContent = userData.name.charAt(0).toUpperCase();
+
+    // Calculate trial days remaining
+    const trialEnd = new Date(userData.trialEndDate);
+    const now = new Date();
+    const daysLeft = Math.ceil((trialEnd - now) / (1000 * 60 * 60 * 24));
+    document.getElementById('trialBadge').textContent = `${daysLeft} days left in trial`;
+
+    // Generate revenue data
+    function generateRevenueData() {
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const data = [];
+      let baseRevenue = 80000;
+      
+      for (let i = 0; i < 12; i++) {
+        baseRevenue += (Math.random() - 0.3) * 15000;
+        data.push({
+          month: months[i],
+          revenue: Math.max(60000, baseRevenue)
+        });
+      }
+      
+      return data;
+    }
+
+    const revenueData = generateRevenueData();
+
+    // Draw line chart
+    const canvas = document.createElement('canvas');
+    canvas.width = 1000;
+    canvas.height = 400;
+    document.getElementById('revenueChart').appendChild(canvas);
+    
+    const ctx = canvas.getContext('2d');
+    const padding = { top: 20, right: 30, bottom: 50, left: 80 };
+    const chartWidth = canvas.width - padding.left - padding.right;
+    const chartHeight = canvas.height - padding.top - padding.bottom;
+    
+    // Background
+    ctx.fillStyle = '#1E293B';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Find min/max
+    const revenues = revenueData.map(d => d.revenue);
+    const minRevenue = Math.min(...revenues);
+    const maxRevenue = Math.max(...revenues);
+    const range = maxRevenue - minRevenue;
+    
+    // Grid lines
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([5, 5]);
+    for (let i = 0; i <= 5; i++) {
+      const y = padding.top + (chartHeight / 5) * i;
+      ctx.beginPath();
+      ctx.moveTo(padding.left, y);
+      ctx.lineTo(padding.left + chartWidth, y);
+      ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    
+    // Axes
+    ctx.strokeStyle = '#64748B';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(padding.left, padding.top);
+    ctx.lineTo(padding.left, padding.top + chartHeight);
+    ctx.lineTo(padding.left + chartWidth, padding.top + chartHeight);
+    ctx.stroke();
+    
+    // Y-axis labels
+    ctx.fillStyle = '#94A3B8';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'right';
+    for (let i = 0; i <= 5; i++) {
+      const value = minRevenue + (range / 5) * (5 - i);
+      const y = padding.top + (chartHeight / 5) * i;
+      ctx.fillText(`$${Math.round(value / 1000)}k`, padding.left - 10, y + 4);
+    }
+    
+    // X-axis labels
+    ctx.textAlign = 'center';
+    revenueData.forEach((d, i) => {
+      const x = padding.left + (chartWidth / 11) * i;
+      ctx.fillText(d.month, x, canvas.height - 20);
+    });
+    
+    // Draw line
+    ctx.strokeStyle = '#60A5FA';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    
+    revenueData.forEach((d, i) => {
+      const x = padding.left + (chartWidth / 11) * i;
+      const y = padding.top + chartHeight - ((d.revenue - minRevenue) / range) * chartHeight;
+      
+      if (i === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+    
+    ctx.stroke();
+    
+    // Draw points
+    revenueData.forEach((d, i) => {
+      const x = padding.left + (chartWidth / 11) * i;
+      const y = padding.top + chartHeight - ((d.revenue - minRevenue) / range) * chartHeight;
+      
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, Math.PI * 2);
+      ctx.fillStyle = '#60A5FA';
+      ctx.fill();
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    });
+    
+    // Add hover interaction
+    let hoveredPoint = null;
+    
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      
+      // Find nearest point
+      let nearest = null;
+      let minDist = Infinity;
+      
+      revenueData.forEach((d, i) => {
+        const x = padding.left + (chartWidth / 11) * i;
+        const y = padding.top + chartHeight - ((d.revenue - minRevenue) / range) * chartHeight;
+        const dist = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
+        
+        if (dist < minDist && dist < 30) {
+          minDist = dist;
+          nearest = { d, x, y, i };
+        }
+      });
+      
+      if (nearest !== hoveredPoint) {
+        hoveredPoint = nearest;
+        
+        // Redraw
+        ctx.fillStyle = '#1E293B';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Redraw grid
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        for (let i = 0; i <= 5; i++) {
+          const y = padding.top + (chartHeight / 5) * i;
+          ctx.beginPath();
+          ctx.moveTo(padding.left, y);
+          ctx.lineTo(padding.left + chartWidth, y);
+          ctx.stroke();
+        }
+        ctx.setLineDash([]);
+        
+        // Redraw axes
+        ctx.strokeStyle = '#64748B';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, padding.top);
+        ctx.lineTo(padding.left, padding.top + chartHeight);
+        ctx.lineTo(padding.left + chartWidth, padding.top + chartHeight);
+        ctx.stroke();
+        
+        // Redraw labels
+        ctx.fillStyle = '#94A3B8';
+        ctx.font = '12px sans-serif';
+        ctx.textAlign = 'right';
+        for (let i = 0; i <= 5; i++) {
+          const value = minRevenue + (range / 5) * (5 - i);
+          const y = padding.top + (chartHeight / 5) * i;
+          ctx.fillText(`$${Math.round(value / 1000)}k`, padding.left - 10, y + 4);
+        }
+        
+        ctx.textAlign = 'center';
+        revenueData.forEach((d, i) => {
+          const x = padding.left + (chartWidth / 11) * i;
+          ctx.fillText(d.month, x, canvas.height - 20);
+        });
+        
+        // Redraw line
+        ctx.strokeStyle = '#60A5FA';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        revenueData.forEach((d, i) => {
+          const x = padding.left + (chartWidth / 11) * i;
+          const y = padding.top + chartHeight - ((d.revenue - minRevenue) / range) * chartHeight;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+        
+        // Redraw points
+        revenueData.forEach((d, i) => {
+          const x = padding.left + (chartWidth / 11) * i;
+          const y = padding.top + chartHeight - ((d.revenue - minRevenue) / range) * chartHeight;
+          ctx.beginPath();
+          ctx.arc(x, y, 5, 0, Math.PI * 2);
+          ctx.fillStyle = '#60A5FA';
+          ctx.fill();
+          ctx.strokeStyle = 'white';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        });
+        
+        // Draw hover highlight
+        if (hoveredPoint) {
+          ctx.beginPath();
+          ctx.arc(hoveredPoint.x, hoveredPoint.y, 8, 0, Math.PI * 2);
+          ctx.fillStyle = '#60A5FA';
+          ctx.fill();
+          ctx.strokeStyle = 'white';
+          ctx.lineWidth = 3;
+          ctx.stroke();
+          
+          ctx.fillStyle = 'white';
+          ctx.font = 'bold 14px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(
+            `$${Math.round(hoveredPoint.d.revenue / 1000)}k`,
+            hoveredPoint.x,
+            hoveredPoint.y - 15
+          );
+        }
+      }
+    });
+    
+    // Chart type switching
+    let currentChartType = 'line';
+    
+    function drawChart(type) {
+      // Clear canvas
+      const chartContainer = document.getElementById('revenueChart');
+      chartContainer.innerHTML = '';
+      
+      const newCanvas = document.createElement('canvas');
+      newCanvas.width = 1000;
+      newCanvas.height = 400;
+      chartContainer.appendChild(newCanvas);
+      
+      const newCtx = newCanvas.getContext('2d');
+      
+      // Background
+      newCtx.fillStyle = '#1E293B';
+      newCtx.fillRect(0, 0, newCanvas.width, newCanvas.height);
+      
+      // Grid lines
+      newCtx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+      newCtx.lineWidth = 1;
+      newCtx.setLineDash([5, 5]);
+      for (let i = 0; i <= 5; i++) {
+        const y = padding.top + (chartHeight / 5) * i;
+        newCtx.beginPath();
+        newCtx.moveTo(padding.left, y);
+        newCtx.lineTo(padding.left + chartWidth, y);
+        newCtx.stroke();
+      }
+      newCtx.setLineDash([]);
+      
+      // Axes
+      newCtx.strokeStyle = '#64748B';
+      newCtx.lineWidth = 2;
+      newCtx.beginPath();
+      newCtx.moveTo(padding.left, padding.top);
+      newCtx.lineTo(padding.left, padding.top + chartHeight);
+      newCtx.lineTo(padding.left + chartWidth, padding.top + chartHeight);
+      newCtx.stroke();
+      
+      // Y-axis labels
+      newCtx.fillStyle = '#94A3B8';
+      newCtx.font = '12px sans-serif';
+      newCtx.textAlign = 'right';
+      for (let i = 0; i <= 5; i++) {
+        const value = minRevenue + (range / 5) * (5 - i);
+        const y = padding.top + (chartHeight / 5) * i;
+        newCtx.fillText(`$${Math.round(value / 1000)}k`, padding.left - 10, y + 4);
+      }
+      
+      // X-axis labels
+      newCtx.textAlign = 'center';
+      revenueData.forEach((d, i) => {
+        const x = padding.left + (chartWidth / 11) * i;
+        newCtx.fillText(d.month, x, newCanvas.height - 20);
+      });
+      
+      if (type === 'line') {
+        // Draw line
+        newCtx.strokeStyle = '#10B981';
+        newCtx.lineWidth = 3;
+        newCtx.beginPath();
+        
+        revenueData.forEach((d, i) => {
+          const x = padding.left + (chartWidth / 11) * i;
+          const y = padding.top + chartHeight - ((d.revenue - minRevenue) / range) * chartHeight;
+          if (i === 0) newCtx.moveTo(x, y);
+          else newCtx.lineTo(x, y);
+        });
+        
+        newCtx.stroke();
+        
+        // Draw points
+        revenueData.forEach((d, i) => {
+          const x = padding.left + (chartWidth / 11) * i;
+          const y = padding.top + chartHeight - ((d.revenue - minRevenue) / range) * chartHeight;
+          newCtx.beginPath();
+          newCtx.arc(x, y, 5, 0, Math.PI * 2);
+          newCtx.fillStyle = '#10B981';
+          newCtx.fill();
+          newCtx.strokeStyle = 'white';
+          newCtx.lineWidth = 2;
+          newCtx.stroke();
+        });
+      } else if (type === 'bar') {
+        // Draw bars
+        const barWidth = (chartWidth / 11) * 0.6;
+        revenueData.forEach((d, i) => {
+          const x = padding.left + (chartWidth / 11) * i - barWidth / 2;
+          const barHeight = ((d.revenue - minRevenue) / range) * chartHeight;
+          const y = padding.top + chartHeight - barHeight;
+          
+          const colors = ['#10B981', '#059669', '#047857', '#065F46', '#064E3B', '#022C22'];
+          newCtx.fillStyle = colors[i % colors.length];
+          newCtx.fillRect(x, y, barWidth, barHeight);
+          
+          // Value on top
+          newCtx.fillStyle = '#fff';
+          newCtx.font = 'bold 11px sans-serif';
+          newCtx.textAlign = 'center';
+          newCtx.fillText(`$${Math.round(d.revenue / 1000)}k`, x + barWidth / 2, y - 5);
+        });
+      } else if (type === 'area') {
+        // Draw area fill
+        newCtx.beginPath();
+        
+        // Start from bottom left
+        const firstX = padding.left;
+        const firstY = padding.top + chartHeight - ((revenueData[0].revenue - minRevenue) / range) * chartHeight;
+        newCtx.moveTo(firstX, padding.top + chartHeight);
+        newCtx.lineTo(firstX, firstY);
+        
+        // Draw line through all points
+        revenueData.forEach((d, i) => {
+          const x = padding.left + (chartWidth / 11) * i;
+          const y = padding.top + chartHeight - ((d.revenue - minRevenue) / range) * chartHeight;
+          newCtx.lineTo(x, y);
+        });
+        
+        // Close path back to baseline
+        const lastX = padding.left + (chartWidth / 11) * (revenueData.length - 1);
+        newCtx.lineTo(lastX, padding.top + chartHeight);
+        newCtx.closePath();
+        
+        // Create and apply gradient
+        const gradient = newCtx.createLinearGradient(0, padding.top, 0, padding.top + chartHeight);
+        gradient.addColorStop(0, 'rgba(16, 185, 129, 0.6)');
+        gradient.addColorStop(0.5, 'rgba(16, 185, 129, 0.3)');
+        gradient.addColorStop(1, 'rgba(16, 185, 129, 0.05)');
+        newCtx.fillStyle = gradient;
+        newCtx.fill();
+        
+        // Draw line on top
+        newCtx.strokeStyle = '#10B981';
+        newCtx.lineWidth = 3;
+        newCtx.beginPath();
+        
+        revenueData.forEach((d, i) => {
+          const x = padding.left + (chartWidth / 11) * i;
+          const y = padding.top + chartHeight - ((d.revenue - minRevenue) / range) * chartHeight;
+          if (i === 0) newCtx.moveTo(x, y);
+          else newCtx.lineTo(x, y);
+        });
+        
+        newCtx.stroke();
+        
+        // Draw points
+        revenueData.forEach((d, i) => {
+          const x = padding.left + (chartWidth / 11) * i;
+          const y = padding.top + chartHeight - ((d.revenue - minRevenue) / range) * chartHeight;
+          newCtx.beginPath();
+          newCtx.arc(x, y, 5, 0, Math.PI * 2);
+          newCtx.fillStyle = '#10B981';
+          newCtx.fill();
+          newCtx.strokeStyle = 'white';
+          newCtx.lineWidth = 2;
+          newCtx.stroke();
+        });
+      }
+    }
+    
+    // Button click handlers
+    document.getElementById('lineBtn').addEventListener('click', function() {
+      document.querySelectorAll('.chart-btn').forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+      currentChartType = 'line';
+      drawChart('line');
+    });
+    
+    document.getElementById('barBtn').addEventListener('click', function() {
+      document.querySelectorAll('.chart-btn').forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+      currentChartType = 'bar';
+      drawChart('bar');
+    });
+    
+    document.getElementById('areaBtn').addEventListener('click', function() {
+      document.querySelectorAll('.chart-btn').forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+      currentChartType = 'area';
+      drawChart('area');
+    });
+  </script>
+</body>
+</html>

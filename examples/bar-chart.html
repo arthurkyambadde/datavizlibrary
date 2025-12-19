@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VizKit - Bar Chart Example</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 1000px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 32px;
+      font-size: 14px;
+    }
+
+    #chart {
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .controls {
+      margin-top: 24px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-size: 14px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(240, 147, 251, 0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>VizKit Bar Chart</h1>
+    <p class="subtitle">Categorical data visualization with gridlines</p>
+    
+    <div id="chart"></div>
+
+    <div class="controls">
+      <button id="randomize">Randomize Data</button>
+      <button id="sort">Sort by Value</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { Chart, BarChart, AxisRenderer, GridRenderer, ScaleManager, RenderLayer } from '../src/index.ts';
+
+    // Generate sample data
+    function generateData() {
+      const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      return categories.map(month => ({
+        month,
+        sales: Math.random() * 100 + 20,
+      }));
+    }
+
+    let data = generateData();
+
+    // Create chart
+    const chart = new Chart({
+      container: '#chart',
+      width: 900,
+      height: 400,
+      margin: { top: 20, right: 30, bottom: 50, left: 60 },
+    });
+
+    const coords = chart.getCoordinateSystem();
+    const plotBounds = coords.getPlotBounds();
+
+    // Create scales
+    const xScale = ScaleManager.createScale({
+      type: 'band',
+      domain: data.map(d => d.month),
+      range: [0, plotBounds.width],
+      padding: 0.2,
+    });
+
+    const yScale = ScaleManager.createScale({
+      type: 'linear',
+      domain: [0, 150],
+      range: [plotBounds.height, 0],
+      nice: true,
+    });
+
+    // Create grid
+    const grid = new GridRenderer({
+      yScale,
+      orientation: 'horizontal',
+      strokeStyle: 'rgba(0, 0, 0, 0.05)',
+      lineDash: [5, 5],
+      layer: RenderLayer.Grid,
+    });
+
+    // Create axes
+    const xAxis = new AxisRenderer({
+      orientation: 'bottom',
+      scale: xScale,
+      label: 'Month',
+      layer: RenderLayer.Background,
+    });
+
+    const yAxis = new AxisRenderer({
+      orientation: 'left',
+      scale: yScale,
+      label: 'Sales ($K)',
+      layer: RenderLayer.Background,
+    });
+
+    // Create bar chart
+    const barChart = new BarChart({
+      data,
+      x: d => d.month,
+      y: d => d.sales,
+      xScale,
+      yScale,
+      fill: (d, i) => {
+        const colors = ['#f093fb', '#f5576c', '#4facfe', '#00f2fe', '#43e97b', '#38f9d7'];
+        return colors[i % colors.length];
+      },
+      barPadding: 0.1,
+    });
+
+    // Add components to chart
+    chart.add({
+      render: (ctx) => {
+        grid.render(ctx, plotBounds.x, plotBounds.y, plotBounds.width, plotBounds.height);
+      },
+      layer: RenderLayer.Grid,
+    });
+
+    chart.add({
+      render: (ctx) => {
+        xAxis.render(ctx, plotBounds.x, plotBounds.y + plotBounds.height, plotBounds.width);
+      },
+      layer: RenderLayer.Background,
+    });
+
+    chart.add({
+      render: (ctx) => {
+        yAxis.render(ctx, plotBounds.x, plotBounds.y, plotBounds.height);
+      },
+      layer: RenderLayer.Background,
+    });
+
+    chart.add(barChart);
+
+    // Initial render
+    chart.render();
+
+    // Add hover interaction
+    const eventManager = chart.getEventManager();
+    const renderer = chart.getRenderer();
+    const interactionCtx = renderer.getContext(RenderLayer.Interaction);
+
+    eventManager.on('mousemove', (e) => {
+      const dataPoint = coords.screenToData(e.point);
+      
+      // Clear interaction layer
+      renderer.clear(RenderLayer.Interaction);
+
+      // Find bar at point
+      const bar = barChart.findBarAtPoint(dataPoint.x, dataPoint.y);
+      
+      if (bar) {
+        // Highlight bar
+        const x = xScale(bar.datum.month);
+        const y = yScale(bar.datum.sales);
+        const y0 = yScale(0);
+        const barWidth = xScale.bandwidth();
+        const barHeight = Math.abs(y0 - y);
+
+        interactionCtx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+        interactionCtx.fillRect(plotBounds.x + x, plotBounds.y + Math.min(y, y0), barWidth, barHeight);
+
+        // Draw value label
+        interactionCtx.fillStyle = '#333';
+        interactionCtx.font = 'bold 14px sans-serif';
+        interactionCtx.textAlign = 'center';
+        interactionCtx.fillText(
+          `$${bar.datum.sales.toFixed(1)}K`,
+          plotBounds.x + x + barWidth / 2,
+          plotBounds.y + y - 10
+        );
+      }
+    });
+
+    // Controls
+    document.getElementById('randomize').addEventListener('click', () => {
+      data = generateData();
+      barChart.updateData(data);
+      
+      ScaleManager.updateDomain(xScale, data.map(d => d.month));
+      xAxis.updateScale(xScale);
+      
+      chart.render();
+    });
+
+    document.getElementById('sort').addEventListener('click', () => {
+      data.sort((a, b) => b.sales - a.sales);
+      barChart.updateData(data);
+      
+      ScaleManager.updateDomain(xScale, data.map(d => d.month));
+      xAxis.updateScale(xScale);
+      
+      chart.render();
+    });
+  </script>
+</body>
+</html>

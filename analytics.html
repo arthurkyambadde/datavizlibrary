@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics - Pulse Analytics</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0F172A;
+      color: white;
+    }
+
+    /* SVG Icons */
+    .icon {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .icon-lg {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 260px;
+      background: #1E293B;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      z-index: 100;
+      overflow-y: auto;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-section img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+    }
+
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #60A5FA, #A78BFA);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-section {
+      margin-bottom: 2rem;
+    }
+
+    .nav-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: #64748B;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    .nav-item {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.25rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #CBD5E1;
+      text-decoration: none;
+    }
+
+    .nav-item:hover {
+      background: rgba(16, 185, 129, 0.2);
+      color: white;
+      text-decoration: none;
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: white;
+      text-decoration: none;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 260px;
+      padding: 2rem;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .header p {
+      color: #94A3B8;
+    }
+
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 2.5rem 0 1.5rem 0;
+    }
+
+    .section-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .view-all {
+      color: #60A5FA;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.3s;
+    }
+
+    .view-all:hover {
+      color: #93C5FD;
+    }
+
+    /* Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .metric-card {
+      background: #1E293B;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .metric-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 1rem;
+    }
+
+    .metric-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    }
+
+    .metric-card h3 {
+      font-size: 0.9rem;
+      color: #94A3B8;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-trend {
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .metric-trend.positive {
+      color: #10B981;
+    }
+
+    .metric-trend.negative {
+      color: #EF4444;
+    }
+
+    /* Chart Grid */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .chart-card {
+      background: #1E293B;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+
+    .chart-card.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-header h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .chart-controls {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .chart-btn {
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: white;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .chart-btn:hover, .chart-btn.active {
+      background: linear-gradient(135deg, #10B981, #059669);
+      border-color: transparent;
+    }
+
+    /* Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th {
+      text-align: left;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      color: #94A3B8;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .data-table td {
+      padding: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .data-table tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .status-badge.success {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10B981;
+    }
+
+    .status-badge.warning {
+      background: rgba(245, 158, 11, 0.2);
+      color: #F59E0B;
+    }
+
+    .status-badge.danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: #EF4444;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo-section">
+      <img src="favicon.png" alt="Pulse Logo">
+      <div class="logo-text">Pulse Analytics</div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-title">Main</div>
+      <a href="dashboard.html" class="nav-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="analytics.html" class="nav-item active">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="20" x2="12" y2="10"></line>
+          <line x1="18" y1="20" x2="18" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="16"></line>
+        </svg>
+        <span>Analytics</span>
+      </a>
+      <a href="data-sources.html" class="nav-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+        </svg>
+        <span>Data Sources</span>
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-title">Tools</div>
+      <a href="ai-insights.html" class="nav-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+          <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+        </svg>
+        <span>AI Insights</span>
+      </a>
+      <a href="reports.html" class="nav-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        <span>Reports</span>
+      </a>
+      <a href="settings.html" class="nav-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M12 1v6m0 6v6m5.2-13.2l-4.2 4.2m-2 2l-4.2 4.2M23 12h-6m-6 0H1m18.2 5.2l-4.2-4.2m-2-2l-4.2-4.2"></path>
+        </svg>
+        <span>Settings</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <div class="header">
+      <h1>
+        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="20" x2="12" y2="10"></line>
+          <line x1="18" y1="20" x2="18" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="16"></line>
+        </svg>
+        Advanced Analytics
+      </h1>
+      <p>Comprehensive insights and performance metrics</p>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="section-header">
+      <h2>
+        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+        </svg>
+        Key Performance Indicators
+      </h2>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-header">
+          <div class="metric-icon" style="background: linear-gradient(135deg, #10B981, #059669);">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+        </div>
+        <h3>Customer Lifetime Value</h3>
+        <div class="metric-value">$2,847</div>
+        <div class="metric-trend positive">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+            <polyline points="17 6 23 6 23 12"></polyline>
+          </svg>
+          18.3% vs last quarter
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <div class="metric-icon" style="background: linear-gradient(135deg, #EF4444, #DC2626);">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+        </div>
+        <h3>Churn Rate</h3>
+        <div class="metric-value">2.4%</div>
+        <div class="metric-trend positive">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline>
+            <polyline points="17 18 23 18 23 12"></polyline>
+          </svg>
+          0.8% improvement
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <div class="metric-icon" style="background: linear-gradient(135deg, #F59E0B, #D97706);">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </div>
+        </div>
+        <h3>Net Promoter Score</h3>
+        <div class="metric-value">67</div>
+        <div class="metric-trend positive">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+            <polyline points="17 6 23 6 23 12"></polyline>
+          </svg>
+          5 points increase
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <div class="metric-icon" style="background: linear-gradient(135deg, #06B6D4, #0891B2);">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+          </div>
+        </div>
+        <h3>Avg. Session Duration</h3>
+        <div class="metric-value">8m 42s</div>
+        <div class="metric-trend positive">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+            <polyline points="17 6 23 6 23 12"></polyline>
+          </svg>
+          22.5% increase
+        </div>
+      </div>
+    </div>
+
+    <!-- User Behavior -->
+    <div class="section-header">
+      <h2>
+        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        User Behavior
+      </h2>
+      <a href="#" class="view-all">
+        View All
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </a>
+    </div>
+
+    <div class="chart-grid">
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>User Engagement by Channel</h3>
+        </div>
+        <div id="channelChart"></div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>Conversion Funnel</h3>
+        </div>
+        <div id="funnelChart"></div>
+      </div>
+    </div>
+
+    <!-- Revenue Analytics -->
+    <div class="section-header">
+      <h2>
+        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="1" x2="12" y2="23"></line>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
+        Revenue Analytics
+      </h2>
+    </div>
+
+    <div class="chart-grid">
+      <div class="chart-card full-width">
+        <div class="chart-header">
+          <h3>Revenue by Product Category</h3>
+          <div class="chart-controls">
+            <button class="chart-btn active">Monthly</button>
+            <button class="chart-btn">Quarterly</button>
+            <button class="chart-btn">Yearly</button>
+          </div>
+        </div>
+        <div id="revenueByCategory"></div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>Top Performing Products</h3>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Revenue</th>
+              <th>Growth</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="topProducts"></tbody>
+        </table>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>Revenue Distribution</h3>
+        </div>
+        <div id="revenueDistribution"></div>
+      </div>
+    </div>
+
+    <!-- Geographic Performance -->
+    <div class="section-header">
+      <h2>
+        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        Geographic Performance
+      </h2>
+    </div>
+
+    <div class="chart-grid">
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>Revenue by Region</h3>
+        </div>
+        <div id="regionChart"></div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>User Growth by Country</h3>
+        </div>
+        <div id="countryGrowth"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Check auth
+    const userData = JSON.parse(localStorage.getItem('pulseUser') || '{}');
+    if (!userData.email) {
+      window.location.href = 'signup.html';
+    }
+
+    // Mock data
+    const channelData = [
+      { channel: 'Email', users: 4200 },
+      { channel: 'Social', users: 3800 },
+      { channel: 'Direct', users: 2900 },
+      { channel: 'Organic', users: 5100 },
+      { channel: 'Paid', users: 1800 }
+    ];
+
+    const funnelData = [
+      { stage: 'Visits', count: 10000 },
+      { stage: 'Signups', count: 3200 },
+      { stage: 'Trials', count: 1800 },
+      { stage: 'Paid', count: 580 }
+    ];
+
+    const categoryData = [
+      { category: 'Enterprise', revenue: 145000 },
+      { category: 'Professional', revenue: 98000 },
+      { category: 'Starter', revenue: 67000 },
+      { category: 'Add-ons', revenue: 34000 }
+    ];
+
+    const regionData = [
+      { region: 'North America', revenue: 156000 },
+      { region: 'Europe', revenue: 98000 },
+      { region: 'Asia Pacific', revenue: 67000 },
+      { region: 'Latin America', revenue: 23000 }
+    ];
+
+    const topProducts = [
+      { name: 'Analytics Pro', revenue: '$45.2K', growth: '+23%', status: 'success' },
+      { name: 'Data Insights', revenue: '$38.7K', growth: '+18%', status: 'success' },
+      { name: 'Team Plan', revenue: '$29.4K', growth: '+12%', status: 'success' },
+      { name: 'API Access', revenue: '$18.9K', growth: '-5%', status: 'warning' },
+      { name: 'Custom Reports', revenue: '$12.3K', growth: '+8%', status: 'success' }
+    ];
+
+    // Render top products table
+    const productsTable = document.getElementById('topProducts');
+    topProducts.forEach(product => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td style="font-weight: 600;">${product.name}</td>
+        <td style="font-weight: 700;">${product.revenue}</td>
+        <td style="color: ${product.growth.startsWith('+') ? '#10B981' : '#EF4444'};">${product.growth}</td>
+        <td><span class="status-badge ${product.status}">${product.status === 'success' ? 'Active' : 'Review'}</span></td>
+      `;
+      productsTable.appendChild(row);
+    });
+
+    // Chart drawing function
+    function drawBarChart(canvasId, data, colors, labelKey = 'channel', valueKey = 'users') {
+      const canvas = document.createElement('canvas');
+      canvas.width = 500;
+      canvas.height = 300;
+      document.getElementById(canvasId).appendChild(canvas);
+      
+      const ctx = canvas.getContext('2d');
+      const padding = { top: 20, right: 20, bottom: 50, left: 60 };
+      const chartWidth = canvas.width - padding.left - padding.right;
+      const chartHeight = canvas.height - padding.top - padding.bottom;
+      
+      ctx.fillStyle = '#1E293B';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      const maxValue = Math.max(...data.map(d => d[valueKey]));
+      const barWidth = chartWidth / data.length;
+      const barPadding = barWidth * 0.2;
+      
+      data.forEach((item, i) => {
+        const barHeight = (item[valueKey] / maxValue) * chartHeight;
+        const x = padding.left + (i * barWidth) + barPadding / 2;
+        const y = padding.top + chartHeight - barHeight;
+        
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.fillRect(x, y, barWidth - barPadding, barHeight);
+        
+        ctx.fillStyle = '#94A3B8';
+        ctx.font = '12px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(item[labelKey], x + (barWidth - barPadding) / 2, canvas.height - 20);
+        
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.fillText(item[valueKey].toLocaleString(), x + (barWidth - barPadding) / 2, y - 5);
+      });
+      
+      ctx.strokeStyle = '#64748B';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(padding.left, padding.top);
+      ctx.lineTo(padding.left, padding.top + chartHeight);
+      ctx.stroke();
+      
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '12px sans-serif';
+      ctx.textAlign = 'right';
+      for (let i = 0; i <= 5; i++) {
+        const value = (maxValue / 5) * i;
+        const y = padding.top + chartHeight - (chartHeight / 5) * i;
+        ctx.fillText(Math.round(value).toLocaleString(), padding.left - 10, y + 4);
+      }
+    }
+
+    // Draw all charts
+    const colors = ['#10B981', '#059669', '#047857', '#065F46', '#064E3B', '#022C22'];
+    
+    drawBarChart('channelChart', channelData, colors);
+    drawBarChart('funnelChart', funnelData.map(d => ({ channel: d.stage, users: d.count })), ['#A78BFA', '#A78BFA', '#A78BFA', '#A78BFA']);
+    drawBarChart('revenueByCategory', categoryData.map(d => ({ channel: d.category, users: d.revenue })), colors, 'channel', 'users');
+    drawBarChart('regionChart', regionData.map(d => ({ channel: d.region, users: d.revenue })), colors, 'channel', 'users');
+    
+    // Revenue distribution (donut-style visualization)
+    const distCanvas = document.createElement('canvas');
+    distCanvas.width = 500;
+    distCanvas.height = 300;
+    document.getElementById('revenueDistribution').appendChild(distCanvas);
+    
+    const distCtx = distCanvas.getContext('2d');
+    distCtx.fillStyle = '#1E293B';
+    distCtx.fillRect(0, 0, distCanvas.width, distCanvas.height);
+    
+    const centerX = distCanvas.width / 2;
+    const centerY = distCanvas.height / 2;
+    const radius = 80;
+    const total = categoryData.reduce((sum, d) => sum + d.revenue, 0);
+    
+    let currentAngle = -Math.PI / 2;
+    categoryData.forEach((item, i) => {
+      const sliceAngle = (item.revenue / total) * Math.PI * 2;
+      
+      distCtx.beginPath();
+      distCtx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+      distCtx.lineTo(centerX, centerY);
+      distCtx.fillStyle = colors[i % colors.length];
+      distCtx.fill();
+      
+      const labelAngle = currentAngle + sliceAngle / 2;
+      const labelX = centerX + Math.cos(labelAngle) * (radius + 30);
+      const labelY = centerY + Math.sin(labelAngle) * (radius + 30);
+      
+      distCtx.fillStyle = '#fff';
+      distCtx.font = 'bold 12px sans-serif';
+      distCtx.textAlign = 'center';
+      distCtx.fillText(item.category, labelX, labelY);
+      distCtx.font = '11px sans-serif';
+      distCtx.fillStyle = '#94A3B8';
+      distCtx.fillText(`$${(item.revenue / 1000).toFixed(0)}K`, labelX, labelY + 15);
+      
+      currentAngle += sliceAngle;
+    });
+    
+    // Country growth chart
+    const countryData = [
+      { country: 'USA', growth: 145 },
+      { country: 'UK', growth: 98 },
+      { country: 'Germany', growth: 87 },
+      { country: 'Canada', growth: 76 },
+      { country: 'Australia', growth: 54 }
+    ];
+    
+    drawBarChart('countryGrowth', countryData.map(d => ({ channel: d.country, users: d.growth })), colors, 'channel', 'users');
+  </script>
+</body>
+</html>

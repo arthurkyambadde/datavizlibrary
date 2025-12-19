@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VizKit - Line Chart Example</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 1000px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 32px;
+      font-size: 14px;
+    }
+
+    #chart {
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .controls {
+      margin-top: 24px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-size: 14px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .stats {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+    }
+
+    .stat {
+      padding: 16px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #667eea;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>VizKit Line Chart</h1>
+    <p class="subtitle">High-performance canvas-based visualization</p>
+    
+    <div id="chart"></div>
+
+    <div class="controls">
+      <button id="randomize">Randomize Data</button>
+      <button id="addPoints">Add 1000 Points</button>
+      <button id="reset">Reset</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" id="pointCount">100</div>
+        <div class="stat-label">Data Points</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="renderTime">0ms</div>
+        <div class="stat-label">Render Time</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="fps">60</div>
+        <div class="stat-label">FPS</div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { Chart, LineChart, AxisRenderer, ScaleManager, RenderLayer } from '../src/index.ts';
+
+    // Generate time series data
+    function generateData(count = 100) {
+      const data = [];
+      const now = Date.now();
+      const oneDay = 24 * 60 * 60 * 1000;
+
+      for (let i = 0; i < count; i++) {
+        data.push({
+          date: new Date(now - (count - i) * oneDay),
+          value: Math.random() * 100 + Math.sin(i / 10) * 30 + 50,
+        });
+      }
+
+      return data;
+    }
+
+    let data = generateData(100);
+
+    // Create chart
+    const chart = new Chart({
+      container: '#chart',
+      width: 900,
+      height: 400,
+      margin: { top: 20, right: 30, bottom: 50, left: 60 },
+    });
+
+    const coords = chart.getCoordinateSystem();
+    const plotBounds = coords.getPlotBounds();
+
+    // Create scales
+    const xScale = ScaleManager.createScale({
+      type: 'time',
+      domain: [data[0].date, data[data.length - 1].date],
+      range: [0, plotBounds.width],
+    });
+
+    const yScale = ScaleManager.createScale({
+      type: 'linear',
+      domain: [0, 150],
+      range: [plotBounds.height, 0],
+      nice: true,
+    });
+
+    // Create axes
+    const xAxis = new AxisRenderer({
+      orientation: 'bottom',
+      scale: xScale,
+      label: 'Date',
+      layer: RenderLayer.Background,
+    });
+
+    const yAxis = new AxisRenderer({
+      orientation: 'left',
+      scale: yScale,
+      label: 'Value',
+      layer: RenderLayer.Background,
+    });
+
+    // Create line chart
+    const lineChart = new LineChart({
+      data,
+      x: d => d.date,
+      y: d => d.value,
+      xScale,
+      yScale,
+      stroke: '#667eea',
+      strokeWidth: 2,
+    });
+
+    // Add components to chart
+    chart.add({
+      render: (ctx) => {
+        xAxis.render(ctx, plotBounds.x, plotBounds.y + plotBounds.height, plotBounds.width);
+      },
+      layer: RenderLayer.Background,
+    });
+
+    chart.add({
+      render: (ctx) => {
+        yAxis.render(ctx, plotBounds.x, plotBounds.y, plotBounds.height);
+      },
+      layer: RenderLayer.Background,
+    });
+
+    chart.add(lineChart);
+
+    // Initial render
+    const startTime = performance.now();
+    chart.render();
+    const renderTime = performance.now() - startTime;
+    document.getElementById('renderTime').textContent = `${renderTime.toFixed(2)}ms`;
+
+    // Add hover interaction
+    const eventManager = chart.getEventManager();
+    const renderer = chart.getRenderer();
+    const interactionCtx = renderer.getContext(RenderLayer.Interaction);
+
+    eventManager.on('mousemove', (e) => {
+      const dataPoint = coords.screenToData(e.point);
+      
+      // Clear interaction layer
+      renderer.clear(RenderLayer.Interaction);
+
+      // Find nearest point
+      const nearest = lineChart.findNearestPoint(dataPoint.x, dataPoint.y);
+      
+      if (nearest) {
+        const px = xScale(nearest.datum.date);
+        const py = yScale(nearest.datum.value);
+
+        // Draw highlight circle
+        interactionCtx.beginPath();
+        interactionCtx.arc(plotBounds.x + px, plotBounds.y + py, 6, 0, Math.PI * 2);
+        interactionCtx.fillStyle = '#667eea';
+        interactionCtx.fill();
+        interactionCtx.strokeStyle = 'white';
+        interactionCtx.lineWidth = 2;
+        interactionCtx.stroke();
+
+        // Update stats
+        document.getElementById('pointCount').textContent = data.length;
+      }
+    });
+
+    // Controls
+    document.getElementById('randomize').addEventListener('click', () => {
+      data = generateData(data.length);
+      lineChart.updateData(data);
+      
+      ScaleManager.updateDomain(xScale, [data[0].date, data[data.length - 1].date]);
+      xAxis.updateScale(xScale);
+      
+      const startTime = performance.now();
+      chart.render();
+      const renderTime = performance.now() - startTime;
+      document.getElementById('renderTime').textContent = `${renderTime.toFixed(2)}ms`;
+    });
+
+    document.getElementById('addPoints').addEventListener('click', () => {
+      data = generateData(data.length + 1000);
+      lineChart.updateData(data);
+      
+      ScaleManager.updateDomain(xScale, [data[0].date, data[data.length - 1].date]);
+      xAxis.updateScale(xScale);
+      
+      const startTime = performance.now();
+      chart.render();
+      const renderTime = performance.now() - startTime;
+      document.getElementById('renderTime').textContent = `${renderTime.toFixed(2)}ms`;
+      document.getElementById('pointCount').textContent = data.length;
+    });
+
+    document.getElementById('reset').addEventListener('click', () => {
+      data = generateData(100);
+      lineChart.updateData(data);
+      
+      ScaleManager.updateDomain(xScale, [data[0].date, data[data.length - 1].date]);
+      xAxis.updateScale(xScale);
+      
+      const startTime = performance.now();
+      chart.render();
+      const renderTime = performance.now() - startTime;
+      document.getElementById('renderTime').textContent = `${renderTime.toFixed(2)}ms`;
+      document.getElementById('pointCount').textContent = data.length;
+    });
+
+    // FPS counter
+    let lastTime = performance.now();
+    let frames = 0;
+    
+    function updateFPS() {
+      frames++;
+      const now = performance.now();
+      
+      if (now >= lastTime + 1000) {
+        document.getElementById('fps').textContent = frames;
+        frames = 0;
+        lastTime = now;
+      }
+      
+      requestAnimationFrame(updateFPS);
+    }
+    
+    updateFPS();
+  </script>
+</body>
+</html>
