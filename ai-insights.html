@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Insights - Pulse Analytics</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0F172A;
+      color: white;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 260px;
+      background: #1E293B;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      z-index: 100;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-section img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+    }
+
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #60A5FA, #A78BFA);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-section {
+      margin-bottom: 2rem;
+    }
+
+    .nav-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: #64748B;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    .nav-item {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.25rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #CBD5E1;
+      text-decoration: none;
+    }
+
+    .nav-item:hover {
+      background: rgba(79, 70, 229, 0.2);
+      color: white;
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+      color: white;
+    }
+
+    .main-content {
+      margin-left: 260px;
+      padding: 2rem;
+      max-width: 1200px;
+    }
+
+    .header {
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      color: #94A3B8;
+    }
+
+    .query-box {
+      background: #1E293B;
+      border: 2px solid rgba(79, 70, 229, 0.3);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .query-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 1.1rem;
+      outline: none;
+      margin-bottom: 1rem;
+    }
+
+    .query-input::placeholder {
+      color: #64748B;
+    }
+
+    .query-btn {
+      padding: 0.75rem 2rem;
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .query-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .insights-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .insight-card {
+      background: #1E293B;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      border-left: 4px solid;
+    }
+
+    .insight-card.positive {
+      border-left-color: #10B981;
+    }
+
+    .insight-card.warning {
+      border-left-color: #F59E0B;
+    }
+
+    .insight-card.negative {
+      border-left-color: #EF4444;
+    }
+
+    .insight-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 1rem;
+    }
+
+    .insight-type {
+      font-size: 0.85rem;
+      color: #64748B;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .insight-confidence {
+      padding: 0.25rem 0.75rem;
+      background: rgba(79, 70, 229, 0.2);
+      border-radius: 12px;
+      font-size: 0.85rem;
+      color: #A78BFA;
+    }
+
+    .insight-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .insight-description {
+      color: #CBD5E1;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .insight-action {
+      color: #60A5FA;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo-section">
+      <img src="favicon.png" alt="Pulse Logo">
+      <div class="logo-text">Pulse Analytics</div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-title">Main</div>
+      <a href="dashboard.html" class="nav-item">
+        <span class="iconify" data-icon="ri:dashboard-line" data-width="20"></span>
+        <span>Dashboard</span>
+      </a>
+      <a href="analytics.html" class="nav-item">
+        <span class="iconify" data-icon="ri:bar-chart-line" data-width="20"></span>
+        <span>Analytics</span>
+      </a>
+      <a href="data-sources.html" class="nav-item">
+        <span class="iconify" data-icon="ri:database-2-line" data-width="20"></span>
+        <span>Data Sources</span>
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-title">Tools</div>
+      <a href="ai-insights.html" class="nav-item active">
+        <span class="iconify" data-icon="ri:brain-line" data-width="20"></span>
+        <span>AI Insights</span>
+      </a>
+      <a href="reports.html" class="nav-item">
+        <span class="iconify" data-icon="ri:file-chart-line" data-width="20"></span>
+        <span>Reports</span>
+      </a>
+      <a href="settings.html" class="nav-item">
+        <span class="iconify" data-icon="ri:settings-3-line" data-width="20"></span>
+        <span>Settings</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="header">
+      <h1>AI Insights 🤖</h1>
+      <p>Ask questions in natural language and get instant insights</p>
+    </div>
+
+    <div class="query-box">
+      <input 
+        type="text" 
+        class="query-input" 
+        placeholder="Ask anything... e.g., 'What's driving revenue growth this quarter?'"
+      >
+      <button class="query-btn">Generate Insights</button>
+    </div>
+
+    <div class="insights-grid" id="insightsGrid"></div>
+  </div>
+
+  <script>
+    // Check auth
+    const userData = JSON.parse(localStorage.getItem('pulseUser') || '{}');
+    if (!userData.email) {
+      window.location.href = 'signup.html';
+    }
+
+    // Mock AI insights
+    const insights = [
+      {
+        type: 'Trend Detection',
+        title: 'Revenue Growth Accelerating',
+        description: 'Your revenue has grown 18.3% month-over-month, significantly higher than the industry average of 8.2%. This acceleration is primarily driven by increased conversion rates in the enterprise segment.',
+        confidence: '94% confident',
+        category: 'positive',
+        action: 'View detailed breakdown →'
+      },
+      {
+        type: 'Anomaly Alert',
+        title: 'Unusual Spike in Churn',
+        description: 'Detected a 23% increase in churn rate among users who signed up 6-8 months ago. This cohort shows lower engagement with new features released in Q3.',
+        confidence: '87% confident',
+        category: 'warning',
+        action: 'Investigate cohort →'
+      },
+      {
+        type: 'Prediction',
+        title: 'Q1 Revenue Forecast',
+        description: 'Based on current trends and seasonal patterns, revenue is projected to reach $187,000 in Q1 2025, representing a 15% increase over Q4 2024.',
+        confidence: '91% confident',
+        category: 'positive',
+        action: 'View forecast model →'
+      },
+      {
+        type: 'Opportunity',
+        title: 'Untapped Market Segment',
+        description: 'Analysis shows that mid-market companies (50-200 employees) have 3x higher LTV but represent only 12% of your customer base. Consider targeted campaigns.',
+        confidence: '89% confident',
+        category: 'positive',
+        action: 'Explore segment →'
+      },
+      {
+        type: 'Risk Assessment',
+        title: 'Feature Adoption Lagging',
+        description: 'Only 34% of users have adopted the new collaboration features launched 2 months ago, below the 60% target. Low adoption correlates with increased churn risk.',
+        confidence: '92% confident',
+        category: 'negative',
+        action: 'View adoption funnel →'
+      }
+    ];
+
+    // Render insights
+    const grid = document.getElementById('insightsGrid');
+    
+    insights.forEach(insight => {
+      const card = document.createElement('div');
+      card.className = `insight-card ${insight.category}`;
+      card.innerHTML = `
+        <div class="insight-header">
+          <div class="insight-type">${insight.type}</div>
+          <div class="insight-confidence">${insight.confidence}</div>
+        </div>
+        <h3>${insight.title}</h3>
+        <div class="insight-description">${insight.description}</div>
+        <div class="insight-action">${insight.action}</div>
+      `;
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
