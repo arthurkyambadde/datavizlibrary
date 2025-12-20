@@ -16,8 +16,8 @@
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #0F172A;
-      color: white;
+      background: #F8F9FC;
+      color: #1E293B;
     }
 
     /* SVG Icons */
@@ -39,8 +39,8 @@
       top: 0;
       bottom: 0;
       width: 260px;
-      background: #1E293B;
-      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      background: #FFFFFF;
+      border-right: 1px solid rgba(0, 0, 0, 0.08);
       padding: 1.5rem;
       z-index: 100;
       overflow-y: auto;
@@ -52,7 +52,7 @@
       gap: 0.75rem;
       margin-bottom: 2rem;
       padding-bottom: 1.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     }
 
     .logo-section img {
@@ -64,7 +64,7 @@
     .logo-text {
       font-size: 1.25rem;
       font-weight: 700;
-      background: linear-gradient(135deg, #60A5FA, #A78BFA);
+      background: linear-gradient(135deg, #4F46E5, #6366F1);
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -91,19 +91,19 @@
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      color: #CBD5E1;
+      color: #64748B;
       text-decoration: none;
     }
 
     .nav-item:hover {
-      background: rgba(16, 185, 129, 0.2);
-      color: white;
+      background: rgba(79, 70, 229, 0.1);
+      color: #1E293B;
       text-decoration: none;
     }
 
     .nav-item.active {
-      background: linear-gradient(135deg, #10B981, #059669);
-      color: white;
+      background: linear-gradient(135deg, #4F46E5, #6366F1);
+      color: #1E293B;
       text-decoration: none;
     }
 
@@ -117,7 +117,7 @@
     .header {
       margin-bottom: 2rem;
       padding-bottom: 1.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     }
 
     .header h1 {
@@ -130,7 +130,7 @@
     }
 
     .header p {
-      color: #94A3B8;
+      color: #64748B;
     }
 
     /* Section Headers */
@@ -173,8 +173,8 @@
     }
 
     .metric-card {
-      background: #1E293B;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.08);
       border-radius: 16px;
       padding: 1.5rem;
       transition: transform 0.3s, box-shadow 0.3s;
@@ -204,7 +204,7 @@
 
     .metric-card h3 {
       font-size: 0.9rem;
-      color: #94A3B8;
+      color: #64748B;
       margin-bottom: 0.5rem;
       font-weight: 600;
     }
@@ -223,7 +223,7 @@
     }
 
     .metric-trend.positive {
-      color: #10B981;
+      color: #4F46E5;
     }
 
     .metric-trend.negative {
@@ -239,8 +239,8 @@
     }
 
     .chart-card {
-      background: #1E293B;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.08);
       border-radius: 16px;
       padding: 2rem;
     }
@@ -271,17 +271,17 @@
 
     .chart-btn {
       padding: 0.5rem 1rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.08);
       border-radius: 8px;
-      color: white;
+      color: #1E293B;
       font-size: 0.85rem;
       cursor: pointer;
       transition: all 0.3s;
     }
 
     .chart-btn:hover, .chart-btn.active {
-      background: linear-gradient(135deg, #10B981, #059669);
+      background: linear-gradient(135deg, #4F46E5, #6366F1);
       border-color: transparent;
     }
 
@@ -294,8 +294,8 @@
     .data-table th {
       text-align: left;
       padding: 1rem;
-      background: rgba(255, 255, 255, 0.02);
-      color: #94A3B8;
+      background: rgba(0, 0, 0, 0.02);
+      color: #64748B;
       font-weight: 600;
       font-size: 0.85rem;
       text-transform: uppercase;
@@ -304,11 +304,11 @@
 
     .data-table td {
       padding: 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
     }
 
     .data-table tr:hover {
-      background: rgba(255, 255, 255, 0.02);
+      background: rgba(0, 0, 0, 0.02);
     }
 
     .status-badge {
@@ -319,8 +319,8 @@
     }
 
     .status-badge.success {
-      background: rgba(16, 185, 129, 0.2);
-      color: #10B981;
+      background: rgba(79, 70, 229, 0.1);
+      color: #4F46E5;
     }
 
     .status-badge.warning {
@@ -428,7 +428,7 @@
     <div class="metrics-grid">
       <div class="metric-card">
         <div class="metric-header">
-          <div class="metric-icon" style="background: linear-gradient(135deg, #10B981, #059669);">
+          <div class="metric-icon" style="background: linear-gradient(135deg, #4F46E5, #6366F1);">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="12" y1="1" x2="12" y2="23"></line>
               <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
@@ -672,7 +672,7 @@
       row.innerHTML = `
         <td style="font-weight: 600;">${product.name}</td>
         <td style="font-weight: 700;">${product.revenue}</td>
-        <td style="color: ${product.growth.startsWith('+') ? '#10B981' : '#EF4444'};">${product.growth}</td>
+        <td style="color: ${product.growth.startsWith('+') ? '#4F46E5' : '#EF4444'};">${product.growth}</td>
         <td><span class="status-badge ${product.status}">${product.status === 'success' ? 'Active' : 'Review'}</span></td>
       `;
       productsTable.appendChild(row);
@@ -705,7 +705,7 @@
         ctx.fillStyle = colors[i % colors.length];
         ctx.fillRect(x, y, barWidth - barPadding, barHeight);
         
-        ctx.fillStyle = '#94A3B8';
+        ctx.fillStyle = '#64748B';
         ctx.font = '12px sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(item[labelKey], x + (barWidth - barPadding) / 2, canvas.height - 20);
@@ -722,7 +722,7 @@
       ctx.lineTo(padding.left, padding.top + chartHeight);
       ctx.stroke();
       
-      ctx.fillStyle = '#94A3B8';
+      ctx.fillStyle = '#64748B';
       ctx.font = '12px sans-serif';
       ctx.textAlign = 'right';
       for (let i = 0; i <= 5; i++) {
@@ -733,7 +733,7 @@
     }
 
     // Draw all charts
-    const colors = ['#10B981', '#059669', '#047857', '#065F46', '#064E3B', '#022C22'];
+    const colors = ['#4F46E5', '#6366F1', '#047857', '#065F46', '#064E3B', '#022C22'];
     
     drawBarChart('channelChart', channelData, colors);
     drawBarChart('funnelChart', funnelData.map(d => ({ channel: d.stage, users: d.count })), ['#A78BFA', '#A78BFA', '#A78BFA', '#A78BFA']);
@@ -774,7 +774,7 @@
       distCtx.textAlign = 'center';
       distCtx.fillText(item.category, labelX, labelY);
       distCtx.font = '11px sans-serif';
-      distCtx.fillStyle = '#94A3B8';
+      distCtx.fillStyle = '#64748B';
       distCtx.fillText(`$${(item.revenue / 1000).toFixed(0)}K`, labelX, labelY + 15);
       
       currentAngle += sliceAngle;
